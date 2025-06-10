@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GS Global Academy - Documents & Certificates</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #E57373;
+      --accent-color: #FFB74D;
+      --text-color: #333;
+      --bg-color: #fff5f5;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header img { height: 120px; }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 600;
+    }
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    h1 { font-family: 'Montserrat', sans-serif; font-size: 32px; }
+    #doc-list {
+      margin-top: 30px;
+    }
+    .doc-item {
+      background-color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .doc-item a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .doc-item .btn {
+      background-color: var(--accent-color);
+      color: var(--primary-color);
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .message {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+    footer {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="assets/logo.png" alt="GS Global Academy Logo">
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="documents.html">Documents & Certificates</a>
+    <a href="gallery.html">Gallery</a>
+  </nav>
+</header>
+
+<main>
+  <h1>Documents & Certificates</h1>
+  <p>Below is a list of our key documents and certificates. Click download to save the file.</p>
+
+  <div id="doc-list"></div>
+  <div id="no-docs" class="message" style="display:none;">No documents available.</div>
+</main>
+
+<footer>
+  <p>&copy; 2024 GS Global Academy. All Rights Reserved.</p>
+</footer>
+
+<script>
+  // ——— repo details ———
+  const repoOwner = 'varunbro';
+  const repoName  = 'school_webpage';
+  const dirPath   = 'docs/certificates';
+
+  async function loadDocuments() {
+    const container = document.getElementById('doc-list');
+    const noDocs     = document.getElementById('no-docs');
+
+    try {
+      const apiUrl   = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${dirPath}`;
+      const response = await fetch(apiUrl);
+      if (!response.ok) throw new Error('Could not fetch directory');
+      const files = await response.json();
+
+      if (!files.length) { noDocs.style.display = 'block'; return; }
+
+      files.forEach(file => {
+        if (file.type !== 'file') return;
+
+        const item = document.createElement('div');
+        item.className = 'doc-item';
+
+        // ---------- VIEW LINK (opens in a new tab) ----------
+        const name  = file.name.replace(/[-_]/g, ' ').replace(/\.[^.]+$/, '');
+        const label = name.charAt(0).toUpperCase() + name.slice(1);
+
+        const viewLink       = document.createElement('a');
+        viewLink.href        = file.download_url;   // raw-content URL
+        viewLink.target      = '_blank';            // open in new tab
+        viewLink.rel         = 'noopener';          // security
+        viewLink.textContent = label;
+        item.appendChild(viewLink);
+
+        // ---------- DOWNLOAD BUTTON (forces a download) ----------
+        const btn        = document.createElement('button');
+        btn.className    = 'btn';
+        btn.textContent  = 'Download';
+
+        btn.addEventListener('click', async () => {
+          try {
+            // fetch the file as a Blob
+            const r   = await fetch(file.download_url);
+            const b   = await r.blob();
+
+            // create a temporary object URL & click it
+            const url = URL.createObjectURL(b);
+            const a   = document.createElement('a');
+            a.href        = url;
+            a.download    = file.name;  // suggested filename
+            document.body.appendChild(a);
+            a.click();
+
+            // tidy up
+            URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+          } catch (e) {
+            console.error('Download failed', e);
+            alert('Sorry – the download could not be started.');
+          }
+        });
+
+        item.appendChild(btn);
+        container.appendChild(item);
+      });
+
+    } catch (err) {
+      console.error('Error loading documents:', err);
+      noDocs.textContent = 'Unable to load documents.';
+      noDocs.style.display = 'block';
+    }
+  }
+
+  loadDocuments();
+</script>
+</body>
+</html>
