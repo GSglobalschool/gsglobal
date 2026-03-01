@@ -64,6 +64,24 @@
       margin-bottom: 6px;
     }
     .card p { font-size: 13px; color: #555; line-height: 1.6; }
+
+    @media (max-width: 640px) {
+      .cards {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 14px;
+        padding: 0 16px 12px;
+        margin-bottom: 36px;
+        scrollbar-width: none;
+      }
+      .cards::-webkit-scrollbar { display: none; }
+      .card {
+        flex: 0 0 72vw;
+        max-width: 260px;
+        padding: 20px 16px;
+      }
+    }
   </style>
 </head>
 <body>
