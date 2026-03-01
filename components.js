@@ -18,6 +18,13 @@ const NAV_LINKS = [
 
 // ── inject <link> tags that every page needs ──────────────────────────────
 (function injectStyles() {
+  // ── favicon ──
+  const favicon = document.createElement('link');
+  favicon.rel  = 'icon';
+  favicon.type = 'image/png';
+  favicon.href = 'assets/logo.png';
+  document.head.appendChild(favicon);
+
   const fonts = document.createElement('link');
   fonts.rel  = 'stylesheet';
   fonts.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Open+Sans:wght@400;600&display=swap';
