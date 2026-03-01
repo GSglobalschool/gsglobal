@@ -1,94 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GS Global Academy - Home</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #E57373; /* lighter red theme */
-            --accent-color: #FFB74D;  /* soft gold accent */
-            --text-color: #333;
-            --bg-color: #fff5f5;     /* very light pink */
-        }
-        body {
-            font-family: 'Open Sans', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url('assets/background.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        header img {
-            height: 120px; /* logo size increased */
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: 600;
-        }
-        .hero {
-            text-align: center;
-            color: white;
-            padding: 100px 20px;
-            background-color: rgba(0, 0, 0, 0.4); /* overlay on background image */
-        }
-        .hero h1 {
-            font-size: 44px;
-            margin-bottom: 20px;
-            font-family: 'Montserrat', sans-serif;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        section {
-            padding: 50px 20px;
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.8);
-        }
-        footer {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 14px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GS Global Academy - Home</title>
+  <script src="components.js"></script>
+  <style>
+    .hero {
+      text-align: center;
+      color: white;
+      padding: clamp(50px, 12vw, 110px) 20px;
+      background-image: url('assets/background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-color: rgba(0,0,0,0.45);
+      background-blend-mode: darken;
+    }
+    .hero h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(26px, 6vw, 48px);
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+      margin-bottom: 12px;
+    }
+    .hero p {
+      font-size: clamp(14px, 2.5vw, 18px);
+      opacity: .9;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .about {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: clamp(30px, 6vw, 60px) 20px;
+      text-align: center;
+      line-height: 1.75;
+      font-size: 15px;
+    }
+    .about h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(20px, 4vw, 28px);
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto 50px;
+      padding: 0 20px;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .card .icon { font-size: 36px; margin-bottom: 10px; }
+    .card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .card p { font-size: 13px; color: #555; line-height: 1.6; }
+  </style>
 </head>
 <body>
 
-<header>
-    <img src="assets/logo.png" alt="GS Global Academy Logo">
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="documents.html">Documents & Certificates</a>
-        <a href="gallery.html">Gallery</a>
-    </nav>
-</header>
-
 <div class="hero">
-    <h1>Welcome to GS Global Academy</h1>
+  <h1>Welcome to GS Global Academy</h1>
+  <p>Excellence · Innovation · Leadership</p>
 </div>
 
-<section>
-    <h2>About Our School</h2>
-    <p>Established in 2016, GS Global Academy is a co-educational institution committed to academic excellence and holistic development. Nestled in the heart of the city, our campus offers modern facilities, dedicated faculty, and a nurturing environment where students are encouraged to explore, innovate, and lead.</p>
+<section class="about">
+  <h2>About Our School</h2>
+  <p>Established in 2016, GS Global Academy is a co-educational institution committed to academic excellence and holistic development. Nestled in the heart of the village, our campus offers modern facilities, dedicated faculty, and a nurturing environment where students are encouraged to explore, innovate, and lead.</p>
 </section>
 
-<footer>
-    <p>&copy; 2024 GS Global Academy. All Rights Reserved.</p>
-</footer>
+<div class="cards">
+  <div class="card">
+    <div class="icon">🎓</div>
+    <h3>Academic Excellence</h3>
+    <p>Rigorous curriculum designed to bring out the best in every student.</p>
+  </div>
+  <div class="card">
+    <div class="icon">🌱</div>
+    <h3>Holistic Growth</h3>
+    <p>Sports, arts, and co-curriculars for all-round development.</p>
+  </div>
+  <div class="card">
+    <div class="icon">🤝</div>
+    <h3>Community Values</h3>
+    <p>A nurturing, inclusive environment where every child belongs.</p>
+  </div>
+</div>
 
 </body>
 </html>
