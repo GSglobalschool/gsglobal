@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GS Global Academy - Transfer Certificates</title>
-  <script src="components.js"></script>
   <style>
     main {
       max-width: 860px;
@@ -71,7 +70,7 @@
 <script>
   const repoOwner = 'GSglobalschool';
   const repoName  = 'gsglobal';
-  const dirPath   = 'transfer_certificates';   // ← folder for Transfer Certificates
+  const dirPath   = 'transfer_certificates';   // ← matches your GitHub folder name
 
   async function loadDocuments() {
     const container = document.getElementById('doc-list');
@@ -130,5 +129,6 @@
 
   loadDocuments();
 </script>
+<script src="components.js"></script>
 </body>
 </html>
