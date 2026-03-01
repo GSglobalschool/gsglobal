@@ -7,8 +7,8 @@
   <style>
     main {
       max-width: 900px;
-      margin: 36px auto;
-      padding: 0 16px;
+      margin: 20px auto 0;
+      padding: 0 12px 20px;
       flex: 1;
       text-align: center;
     }
@@ -16,8 +16,8 @@
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
-      max-height: 480px;
-      margin: 20px auto;
+      max-height: 460px;
+      margin: 14px auto 0;
       border-radius: var(--radius);
       overflow: hidden;
       background: #111;
@@ -83,8 +83,10 @@
 
     /* smaller phones */
     @media (max-width: 480px) {
-      .nav-btn { padding: 8px 12px; font-size: 16px; }
-      .thumbnail-strip img { width: 70px; height: 44px; }
+      main { margin-top: 14px; padding: 0 8px 14px; }
+      .nav-btn { padding: 7px 10px; font-size: 15px; }
+      .thumbnail-strip img { width: 62px; height: 40px; }
+      .slideshow-container { margin-top: 10px; }
     }
   </style>
 </head>
@@ -166,6 +168,18 @@
     if (e.key === 'ArrowLeft')  showImage((currentIndex - 1 + images.length) % images.length);
     if (e.key === 'ArrowRight') showImage((currentIndex + 1) % images.length);
   });
+
+  // touch swipe support
+  let touchStartX = 0;
+  const slideshow = document.querySelector('.slideshow-container');
+  slideshow.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+  slideshow.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].screenX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) showImage((currentIndex + 1) % images.length);
+      else          showImage((currentIndex - 1 + images.length) % images.length);
+    }
+  }, { passive: true });
 
   loadGallery();
 </script>
