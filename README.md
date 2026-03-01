@@ -16,8 +16,6 @@
 **Folder:** `docs/certificates/`
 
 ### Rules
-- Only upload **PDF files** (`.pdf`)
-- File names must **not contain spaces** — use hyphens `-` or underscores `_` instead
 - Use clear, descriptive names (e.g. `Bonafide-Certificate-2025.pdf`)
 - Do not use special characters like `@`, `#`, `%`, `&` in file names
 
@@ -101,4 +99,5 @@ If an uploaded file is not showing on the website:
 3. Wait **1–2 minutes** and refresh the page
 4. If the page still not works press Ctrl + shift + I. This will open inspect menu. Just long press refresh button and a pop-up will open. Select **Empty cache and hard refresh**. The page will show new documents. 
 5. For technical issues, contact the website developer
+
 
