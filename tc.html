@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GS Global Academy - Transfer Certificates</title>
+  <style>
+    main {
+      max-width: 860px;
+      margin: 36px auto;
+      padding: 0 16px;
+      flex: 1;
+    }
+    .doc-item {
+      background: var(--card-bg);
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .doc-item a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      flex: 1;
+      min-width: 140px;
+    }
+    .doc-item a:hover { text-decoration: underline; }
+    .btn {
+      background-color: var(--accent);
+      color: var(--primary);
+      padding: 7px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+      transition: filter .2s;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .message {
+      text-align: center;
+      color: var(--primary);
+      font-weight: 600;
+      margin-top: 40px;
+    }
+    .loader {
+      text-align: center;
+      color: #888;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <h1 class="page-heading">Transfer Certificates</h1>
+  <p style="margin-bottom:24px;color:#555;">Click a certificate name to view it, or use the Download button to save a copy.</p>
+  <div id="doc-list"><p class="loader">Loading…</p></div>
+  <div id="no-docs" class="message" style="display:none;">No transfer certificates available.</div>
+</main>
+
+<script>
+  const repoOwner = 'GSglobalschool';
+  const repoName  = 'gsglobal';
+  const dirPath   = 'transfer_certificates';   // ← matches your GitHub folder name
+
+  async function loadDocuments() {
+    const container = document.getElementById('doc-list');
+    const noDocs    = document.getElementById('no-docs');
+    container.innerHTML = '';
+
+    try {
+      const apiUrl   = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${dirPath}`;
+      const response = await fetch(apiUrl);
+      if (!response.ok) throw new Error('Could not fetch directory');
+      const files = await response.json();
+      const fileList = files.filter(f => f.type === 'file');
+
+      if (!fileList.length) { noDocs.style.display = 'block'; return; }
+
+      fileList.forEach(file => {
+        const name  = file.name.replace(/[-_]/g, ' ').replace(/\.[^.]+$/, '');
+        const label = name.charAt(0).toUpperCase() + name.slice(1);
+
+        const item      = document.createElement('div');
+        item.className  = 'doc-item';
+
+        const viewLink       = document.createElement('a');
+        viewLink.href        = file.download_url;
+        viewLink.target      = '_blank';
+        viewLink.rel         = 'noopener noreferrer';
+        viewLink.textContent = label;
+
+        const btn       = document.createElement('button');
+        btn.className   = 'btn';
+        btn.textContent = 'Download';
+        btn.addEventListener('click', async () => {
+          try {
+            const r   = await fetch(file.download_url);
+            const b   = await r.blob();
+            const url = URL.createObjectURL(b);
+            const a   = document.createElement('a');
+            a.href = url; a.download = file.name;
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+          } catch (e) { alert('Download could not be started.'); }
+        });
+
+        item.appendChild(viewLink);
+        item.appendChild(btn);
+        container.appendChild(item);
+      });
+    } catch (err) {
+      console.error(err);
+      noDocs.textContent = 'Unable to load transfer certificates.';
+      noDocs.style.display = 'block';
+    }
+  }
+
+  loadDocuments();
+</script>
+<script src="components.js"></script>
+</body>
+</html>
