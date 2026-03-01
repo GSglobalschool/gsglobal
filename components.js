@@ -18,13 +18,6 @@ const NAV_LINKS = [
 
 // ── inject <link> tags that every page needs ──────────────────────────────
 (function injectStyles() {
-  // ── favicon ──
-  const favicon = document.createElement('link');
-  favicon.rel  = 'icon';
-  favicon.type = 'image/png';
-  favicon.href = 'assets/logo.png';
-  document.head.appendChild(favicon);
-
   const fonts = document.createElement('link');
   fonts.rel  = 'stylesheet';
   fonts.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Open+Sans:wght@400;600&display=swap';
@@ -67,6 +60,7 @@ const NAV_LINKS = [
       top: 0;
       z-index: 100;
       box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      transition: transform 0.3s ease;
     }
     .site-header .logo-link {
       display: flex;
@@ -178,6 +172,19 @@ function renderHeader() {
       <nav class="site-nav" id="siteNav">${navLinks}</nav>
     </header>
   `);
+
+  // hide on scroll down, show on scroll up
+  let lastY = 0;
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('.site-header');
+    const currentY = window.scrollY;
+    if (currentY > lastY && currentY > 60) {
+      header.style.transform = 'translateY(-100%)';
+    } else {
+      header.style.transform = 'translateY(0)';
+    }
+    lastY = currentY;
+  }, { passive: true });
 
   // hamburger toggle
   document.querySelector('.nav-toggle').addEventListener('click', function () {
